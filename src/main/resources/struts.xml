@@ -17,4 +17,19 @@
         <action name="test_*" class="com.ylyao.action.TestAction" method="{1}">
         </action>
 	</package>
+	
+	<package name="login" extends="struts-default">
+        <action name="login_*" class="com.ylyao.action.LoginAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="jsPicture" extends="struts-default">
+        <action name="jsPicture_*" class="com.ylyao.action.JSpictureAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="initAction" extends="struts-default">
+        <action name="initAction_*" class="com.ylyao.action.InitAction" method="{1}">
+        </action>
+	</package>
 </struts>

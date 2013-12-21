@@ -26,7 +26,7 @@
         <webClassPathEntry>J:/m2/commons-lang/commons-lang/2.2/commons-lang-2.2.jar</webClassPathEntry>
         <webClassPathEntry>J:/m2/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar</webClassPathEntry>
         <webClassPathEntry>J:/m2/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar</webClassPathEntry>
-        <webClassPathEntry>J:/m2/javax/servlet/jstl/1.2/jstl-1.2.jar</webClassPathEntry>
+        <webClassPathEntry>J:/m2/javax/mail/mail/1.4.1/mail-1.4.1.jar</webClassPathEntry>
         <webClassPathEntry>J:/m2/junit/junit/4.8.1/junit-4.8.1.jar</webClassPathEntry>
         <webClassPathEntry>J:/m2/log4j/log4j/1.2.16/log4j-1.2.16.jar</webClassPathEntry>
         <webClassPathEntry>J:/m2/net/arnx/wmf2svg/0.9.0/wmf2svg-0.9.0.jar</webClassPathEntry>

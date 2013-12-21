@@ -30,7 +30,6 @@ J:\m2\org\springframework\spring\2.5.6\spring-2.5.6.jar
 J:\m2\c3p0\c3p0\0.9.1\c3p0-0.9.1.jar
 J:\m2\net\sourceforge\jtds\jtds\1.2.4\jtds-1.2.4.jar
 J:\m2\taglibs\standard\1.1.2\standard-1.1.2.jar
-J:\m2\javax\servlet\jstl\1.2\jstl-1.2.jar
 J:\m2\org\apache\poi\poi\3.6\poi-3.6.jar
 J:\m2\org\apache\poi\poi-ooxml\3.6\poi-ooxml-3.6.jar
 J:\m2\org\apache\poi\poi-ooxml-schemas\3.6\poi-ooxml-schemas-3.6.jar
@@ -58,3 +57,4 @@ J:\m2\commons-cli\commons-cli\1.0\commons-cli-1.0.jar
 J:\m2\org\apache\ant\ant\1.7.1\ant-1.7.1.jar
 J:\m2\org\apache\ant\ant-launcher\1.7.1\ant-launcher-1.7.1.jar
 J:\m2\activemq\jaxb-api\20050407\jaxb-api-20050407.jar
+J:\m2\javax\mail\mail\1.4.1\mail-1.4.1.jar

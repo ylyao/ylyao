@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysSql">
+	<typeAlias alias="MsgInfo"
+		type="com.ylyao.model.MsgInfo" />
+	
+	<typeAlias alias="EmailInfo"
+		type="com.ylyao.model.EmailInfo" />
+		
+	<typeAlias alias="SystemBean"
+		type="com.ylyao.model.SystemBean" />
+
+	<resultMap class="MsgInfo" id="msgInfoListMap">
+		<result property="id" column="ID" />
+		<result property="msgInfo" column="MSG_INFO" />
+		<result property="type" column="MSG_TYPE" />
+		<result property="updateTime" column="UPDATE_TIME" />
+		<result property="passTime" column="PASS_TIME" />
+		<result property="sendAlready" column="SEND_ALREADY" />
+	</resultMap>
+	
+	<resultMap class="EmailInfo" id="emailInfoListMap">
+		<result property="id" column="ID" />
+		<result property="emailKey" column="EMAIL_KEY" />
+		<result property="emailValue" column="EMAIL_VALUE" />
+		<result property="updateTime" column="UPDATE_TIME" />
+	</resultMap>
+	
+	<resultMap class="SystemBean" id="systemBean">
+		<result property="id" column="ID" />
+		<result property="name" column="NAME" />
+		<result property="value" column="VALUE" />
+		<result property="bigValue" column="BIG_VALUE" />	
+	</resultMap>
+
+	<select id="findSendMsgInfo" resultMap="msgInfoListMap" parameterClass="java.util.Map">
+      <![CDATA[
+      		SELECT * from MSG_INFO WHERE MSG_TYPE = #type# AND SEND_ALREADY = 0 AND PASS_TIME <= getdate();
+      ]]>
+	</select>
+	
+	<insert id="insertMsgInfo" parameterClass="com.ylyao.model.MsgInfo">
+		<selectKey resultClass="java.lang.Long" keyProperty="id">
+        <![CDATA[
+        	insert into MSG_INFO (MSG_INFO,MSG_TYPE,UPDATE_TIME,PASS_TIME,SEND_ALREADY) values(#msgInfo#,#type#,#updateTime#,#passTime#,#sendAlready#)
+        	SELECT SCOPE_IDENTITY() AS ID 
+        ]]>
+		</selectKey>
+	</insert>
+	
+	<update id="updateSuccess" parameterClass="java.util.Map">
+		update 	MSG_INFO set SEND_ALREADY = 1 where id = #id#
+	</update>
+	
+	<update id="updateFail" parameterClass="java.util.Map">
+		update 	MSG_INFO set SEND_ALREADY = 2 where id = #id#
+	</update>
+
+	<select id="findSystemInfo" resultMap="systemBean" >
+      <![CDATA[
+      		SELECT * from SYSTEM_INFO;
+      ]]>
+	</select>
+
+	<select id="findEmailInfo" resultMap="emailInfoListMap" >
+      <![CDATA[
+      		SELECT * from EMAIL_INFO;
+      ]]>
+	</select>
+</sqlMap>

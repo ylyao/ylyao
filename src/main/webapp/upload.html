@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>上传图片</title>
+<link rel="stylesheet" title="Default" href="css/css3-formular-styles.css" type="text/css" media="screen">
+<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+
+<script>
+	function upload(){
+		var url = $("#firstname").val();
+		var remark = $("#content").val();
+		jQuery.ajax("jsPicture_dealJSpicture.do", {
+	        type:"post",
+	        data:{
+	        	"bigUrl":url,
+	        	"remark":remark
+	        },
+	        success:function (data) {
+	        	
+	        }
+		});
+	}
+</script>
+</head>
+<body>
+<div class="wrapper">
+<form class="commentForm" action="#" method="post">
+<fieldset>
+<ol class="clearfix">
+<li>
+<label for="firstname">URL:</label>
+<input gtbfieldid="1" size="70" name="firstname" id="firstname" type="text">
+</li>
+<li>
+<label for="content">REMARK:</label>
+<textarea cols="32" rows="7" name="content" id="content"></textarea>
+</li>
+<li class="last">
+<input name="submit" id="submit" value="Absenden" type="submit" onclick="upload();"/>
+</li>
+</ol>
+</fieldset>
+</form><br />
+<div style="text-align:center;clear:both">
+</div>
+</body>
+</html>

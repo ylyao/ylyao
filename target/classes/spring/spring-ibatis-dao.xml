@@ -5,5 +5,7 @@
 
 <beans>
     <bean id="testDao" class="com.ylyao.dao.impl.TestDaoImpl" autowire="byName"/>
-    
+    <bean id="jspictureDao" class="com.ylyao.dao.impl.JSpictureDaoImpl" autowire="byName"/>
+    <bean id="loginDao" class="com.ylyao.dao.impl.LoginDaoImpl" autowire="byName"/>
+    <bean id="systemDao" class="com.ylyao.dao.impl.SystemDaoImpl" autowire="byName"/>
 </beans>

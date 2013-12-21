@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LoginSql">
+	<typeAlias alias="User"
+		type="com.ylyao.model.User" />
+
+	<resultMap class="User" id="userList">
+		<result property="id" column="ID" />
+		<result property="username" column="USERNAME" />
+		<result property="password" column="PASSWORD" />
+		<result property="info" column="INFO" />
+		<result property="updateTime" column="UPDATETIME" />
+	</resultMap>
+
+	<!--政策观察详细  -->
+	<select id="login" resultMap="userList" parameterClass="com.ylyao.model.User">
+      <![CDATA[
+      	SELECT * from USER_INFO WHERE USERNAME = #username# 
+      ]]>
+	</select>
+	
+	<insert id="insertUser" parameterClass="com.ylyao.model.User">
+		<selectKey resultClass="java.lang.Long" keyProperty="id">
+        <![CDATA[
+        	insert into USER_INFO (USERNAME,PASSWORD,INFO,UPDATETIME) values(#username#,#password#,#info#,#updateTime#)
+        	SELECT SCOPE_IDENTITY() AS ID 
+        ]]>
+		</selectKey>
+	</insert>
+	
+	<update id="activate" parameterClass="java.util.Map">
+		update 	USER_INFO set INFO = NULL where INFO = #key#
+	</update>
+
+</sqlMap>

@@ -6,7 +6,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: #000;
-	background-image: url(http://melissahie.com/images/bg.gif);
+	background-image: url(images/bg_black.gif);
 }
 
 #container {
@@ -27,7 +27,7 @@ body {
 	top: 0px;
 	left: 0px;
 	background-color: #222;
-	background-image: url(http://melissahie.com/images/bg_butterfly.gif);
+	background-image: url(images/bg_butterfly.gif);
 	background-repeat: no-repeat;
 	background-position: bottom right;
 }
@@ -36,7 +36,7 @@ body {
 	top: 1280px;
 	left: 0px;
 	background-color: #DD1F8E;
-	background-image: url(http://melissahie.com/images/bg_pink.gif);
+	background-image: url(images/bg_pink.gif);
 	background-repeat: repeat-y;
 }
 
@@ -44,7 +44,7 @@ body {
 	top: 1280px;
 	left: 2000px;
 	background-color: #00A7E2;
-	background-image: url(http://melissahie.com/images/bg_blue.gif);
+	background-image: url(images/bg_blue.gif);
 	background-repeat: repeat-y;
 }
 	
@@ -53,7 +53,7 @@ body {
 	top: 0px;
 	left: 2000px;
 	background-color: #84C922;
-	background-image: url(http://melissahie.com/images/bg_green.gif);
+	background-image: url(images/bg_green.gif);
 	background-repeat: repeat-y;
 }
 	
@@ -61,7 +61,7 @@ body {
 	top: 0px;
 	left: 4000px;
 	background-color: #EE9A10;
-	background-image: url(http://melissahie.com/images/bg_orange.gif);
+	background-image: url(images/bg_orange.gif);
 	background-repeat: repeat-y;
 }
 	
@@ -69,12 +69,12 @@ body {
 	top: 1280px;
 	left: 4000px;
 	background-color: #620294;
-	background-image: url(http://melissahie.com/images/bg_purple.gif);
+	background-image: url(images/bg_purple.gif);
 	background-repeat: repeat-y;
 }
 
 .inside {
-	margin: 60px;
+	margin: 50px;
 	width: 625px;
 }
 	

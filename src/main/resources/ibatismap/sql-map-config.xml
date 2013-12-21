@@ -8,5 +8,13 @@
 		useStatementNamespaces="true" />
 
 	<sqlMap resource="ibatismap/sqlserver/test.xml" />
+	
+	<sqlMap resource="ibatismap/sqlserver/JSpicture.xml" />
+
+	<sqlMap resource="ibatismap/sqlserver/Login.xml" />
+
+	<sqlMap resource="ibatismap/sqlserver/mainPage.xml" />
+	
+	<sqlMap resource="ibatismap/sqlserver/system.xml" />
 
 </sqlMapConfig>
