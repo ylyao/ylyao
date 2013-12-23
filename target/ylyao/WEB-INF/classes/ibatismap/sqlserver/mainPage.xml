@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pageSQL">
+	<typeAlias alias="PageBean"
+		type="com.ylyao.model.PageBean" />
+
+	<typeAlias alias="JSpictureBean" type="com.ylyao.model.JSpictureBean" />
+
+	<resultMap class="JSpictureBean" id="jspictureBeanListMap">
+		<result property="id" column="ID" />
+		<result property="type" column="TYPE" />
+		<result property="url" column="URL" />
+		<result property="realUrl" column="REALURL" />
+		<result property="remark" column="REMARK" />
+		<result property="updateTime" column="UPDATETIME" />
+		<result property="status" column="STATUS" />
+		<result property="bigId" column="BIG_ID" />
+		<result property="miniUrl" column="MINI_URL" />
+	</resultMap>
+	
+	<resultMap class="PageBean" id="pageBeanList">
+		<result property="id" column="ID" />
+		<result property="infoId" column="INFOID" />
+		<result property="updateTime" column="UPDATETIME" />
+		<result property="type" column="INFOTYPE" />
+	</resultMap>
+
+	<!--政策观察详细  -->
+	<select id="getPage" resultMap="pageBeanList" parameterClass="java.util.Map">
+      <![CDATA[
+      	SELECT TOP $pagesize$ *
+			FROM PAGEBEAN
+			WHERE (ID NOT IN
+            	(SELECT TOP $sizes$ id
+         			FROM PAGEBEAN
+        		 ORDER BY UPDATETIME DESC,ID DESC))
+			 ORDER BY UPDATETIME DESC,ID DESC
+      ]]>
+	</select>
+	
+	<select id="getIds" resultMap="jspictureBeanListMap" parameterClass="java.util.Map">
+      <![CDATA[
+      	SELECT * FROM JS_PICTURE WHERE ID IN ( $ids$ )
+      ]]>
+	</select>
+
+
+	<insert id="insertPageBean" parameterClass="com.ylyao.model.PageBean">
+		<selectKey resultClass="java.lang.Long" keyProperty="id">
+        <![CDATA[
+        	insert into PAGEBEAN (INFOID,UPDATETIME,INFOTYPE) values(#infoId#,#updateTime#,#type#)
+        	SELECT SCOPE_IDENTITY() AS ID 
+        ]]>
+		</selectKey>
+	</insert>
+</sqlMap>

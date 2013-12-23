@@ -1,5 +1,6 @@
 package com.ylyao.action;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +9,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.ylyao.model.JSpictureBean;
 import com.ylyao.model.MsgInfo;
@@ -37,28 +41,46 @@ public class JSpictureAction extends BaseAction{
 	private int pagesize;
 	
 	private int page;
+	
+	private Long infoid;
 
 	public void dealJSpicture(){
-		JSpictureBean jsBean = new JSpictureBean();
-		jsBean.setUrl(bigUrl);
-		jsBean.setRemark(remark);
-		jsBean.setType("PIC");
-		jsBean.setUpdateTime(new Date());
-		jsBean.setStatus("ACTIVE");
-		String miniPath = this.dealMini(bigUrl);
-		if (miniPath != null){
-			DwindlePic mypic = new DwindlePic();
-			mypic.s_pic(getWebPath()+miniPath, getWebPath()+miniPath.replace(".", "_mini."), "", "", 800,2400, true);
-			jsBean.setMiniUrl(miniPath.replace(".", "_mini."));
+		bigUrl.replace("\\n", "");
+		String[] urls = bigUrl.split(";");
+		JSpictureBean jsBean = null;
+		DwindlePic mypic = new DwindlePic();
+
+		int i = 1;
+		for (String url : urls){
+			if (!url.contains("http:")){
+				continue;
+			}
+			if (!url.contains(".jpg") && !url.contains(".png")){
+				continue;
+			}
+			jsBean = new JSpictureBean();
+			jsBean.setUrl(url.trim());
+			jsBean.setRemark(remark);
+			jsBean.setType("PIC");
+			jsBean.setUpdateTime(new Date());
+			jsBean.setStatus("ACTIVE");
+			String miniPath = this.dealMini(url.trim());
+			if (miniPath != null){
+				mypic.s_pic(getWebPath()+miniPath, getWebPath()+miniPath.replace(".", "_mini."), "", "", 300,800, true);
+				jsBean.setMiniUrl(miniPath.replace(".", "_mini."));
+				mypic = null;
+			}
+			Long infoId = jspictureService.saveJSpicture(jsBean);
+			PageBean pb = new PageBean();
+			pb.setInfoId(infoId);
+			pb.setType("PIC");
+			pb.setUpdateTime(new Date());
+			Long id = jspictureService.savePageBean(pb);
+			log.info("add "+i+" picture success!"+id);
+			i++;
 		}
-		Long infoId = jspictureService.saveJSpicture(jsBean);
-		PageBean pb = new PageBean();
-		pb.setInfoId(infoId);
-		pb.setType("PIC");
-		pb.setUpdateTime(new Date());
-		jspictureService.savePageBean(pb);
 		try {
-			this.writeJson("true");
+			this.writeJson("图片处理成功！"+i);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,6 +99,8 @@ public class JSpictureAction extends BaseAction{
 			int byteread = 0;
 			url = new URL(urlPath);
 			URLConnection conn = url.openConnection();// 获得连接
+			conn.setConnectTimeout(30000);
+			conn.setReadTimeout(60000);
 			InputStream inStream = conn.getInputStream();// 生成输入流文件
 			FileOutputStream fs = new FileOutputStream(getWebPath()+miniPath);
 			byte[] buffer = new byte[30000];
@@ -87,6 +111,7 @@ public class JSpictureAction extends BaseAction{
 			fs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			log.info(urlPath+"远程读取失败！");
 		}
 		return miniPath;
 	}
@@ -173,6 +198,122 @@ public class JSpictureAction extends BaseAction{
 		}
 	}
 	
+	public void resetThis() throws Exception {
+		List<Long> picList = new ArrayList<Long>();
+		List<Long> delIds = new ArrayList<Long>();
+		JSpictureBean jb = null;
+		picList.add(infoid);
+		List<Object> result = jspictureService.findByIds(picList);
+		if (result == null || result.isEmpty()){
+			delIds.add(infoid);
+			jspictureService.deleteISpictures(delIds);
+			this.writeJson("");
+			return ;
+		}else{
+			jb = (JSpictureBean)result.get(0);
+			if (jb.getUrl() == null){
+				delIds.add(infoid);
+				jspictureService.deleteISpictures(delIds);
+				this.writeJson("");
+				return ;
+			}
+			String miniPath = jb.getMiniUrl();
+			if (miniPath != null){
+				new File(getWebPath()+miniPath).delete();
+			}
+			miniPath = this.dealMini(jb.getUrl().trim());
+			if (miniPath != null) {
+				DwindlePic mypic = new DwindlePic();
+				mypic = new DwindlePic();
+				mypic.s_pic(getWebPath() + miniPath,
+						getWebPath() + miniPath.replace(".", "_mini."), "", "",
+						300, 800, true);
+				jb.setMiniUrl(miniPath.replace(".", "_mini."));
+				jspictureService.updateJSpicture(jb);
+				log.info("文件重新加载成功："+jb.getMiniUrl());
+				mypic = null;
+			} else {
+				delIds.add(jb.getId());
+				jspictureService.deleteISpictures(delIds);
+				this.writeJson("");
+				return ;
+			}
+		}
+
+	}
+	
+	public void resetAllPic() throws Exception{
+		File file = null;
+		List<PageBean> list = jspictureService.findPageInfo(10000, 1);
+		List<Object> result = new ArrayList<Object>();
+		List<Long> picList = new ArrayList<Long>();
+		List<Long> delIds = new ArrayList<Long>();
+		Map<Long,Long> picMap = new HashMap<Long,Long>();
+		for (PageBean pg : list){
+			if (pg.getType().equals("PIC")){
+				picList.add(pg.getInfoId());
+				picMap.put(pg.getInfoId(), pg.getInfoId());
+			}
+		}
+		result = jspictureService.findByIds(picList);
+		JSpictureBean jb = null;
+		String miniPath = "";
+		DwindlePic mypic = null;
+		Map<String,String> map = new HashMap<String,String>();
+		for (Object obj : result){
+			jb = (JSpictureBean)obj;
+			picMap.remove(jb.getId());
+			if (jb.getUrl() == null){
+				delIds.add(jb.getId());
+				continue;
+			}
+			miniUrl = jb.getMiniUrl();
+			file = new File(getWebPath() + miniUrl);
+			if (!file.exists()) {
+				log.info("文件："+miniUrl+"不存在，重新加载！");
+				miniPath = this.dealMini(jb.getUrl().trim());
+				if (miniPath != null) {
+					mypic = new DwindlePic();
+					mypic.s_pic(getWebPath() + miniPath, getWebPath()
+							+ miniPath.replace(".", "_mini."), "", "", 400,
+							1200, true);
+					jb.setMiniUrl(miniPath.replace(".", "_mini."));
+				} else {
+					delIds.add(jb.getId());
+					log.info("文件重新加载失败："+jb.getMiniUrl());
+					continue;
+				}
+				mypic = null;
+				jspictureService.updateJSpicture(jb);
+				log.info("文件重新加载成功："+jb.getMiniUrl());
+				map.put(new File(getWebPath()+jb.getMiniUrl()).getName(), jb.getMiniUrl());
+			}else{
+				map.put(file.getName(),file.getName());
+			}
+		}
+		if (picMap.size() > 0){
+			Set<Long> keySets = picMap.keySet();
+			for (long key : keySets) {
+				delIds.add(key);
+				log.info("清楚数据："+key);
+			}
+		}
+		jspictureService.deleteISpictures(delIds);
+		file = new File(getWebPath()+"pictures");
+		String[] files = file.list();
+		boolean suc = false;
+		for (String fileName : files){
+			if (fileName.equals("temp")){
+				continue;
+			}
+			if (map.get(fileName) == null){
+				suc = (new File(getWebPath()+"pictures\\"+fileName)).delete();
+				log.info("删除文件"+fileName+" "+suc);
+			}
+		}
+		writeJson("重置成功！");
+	}
+	
 	/**   set and get **/
 	public JSpictureService getJspictureService() {
 		return jspictureService;
@@ -228,6 +369,14 @@ public class JSpictureAction extends BaseAction{
 
 	public void setSystemService(SystemService systemService) {
 		this.systemService = systemService;
+	}
+
+	public Long getInfoid() {
+		return infoid;
+	}
+
+	public void setInfoid(Long infoid) {
+		this.infoid = infoid;
 	}
 	
 }

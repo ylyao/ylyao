@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.ylyao.mail.JavaMail;
 import com.ylyao.model.EmailInfo;
+import com.ylyao.model.SystemBean;
 import com.ylyao.model.User;
 import com.ylyao.service.LoginService;
 import com.ylyao.service.SystemService;
@@ -114,7 +115,12 @@ public class LoginAction extends BaseAction {
 		}
 		loginService.insertUserInfo(user);
 		JavaMail javaMail = JavaMail.getInstance();
-		String url = "http://localhost:8388/ylyao/activate.html?key="+key;
+		SystemBean sb = systemService.findSystemInfo("ylyaoUrl");
+		String url = "";
+		if (sb != null){
+			url = sb.getValue();
+		}
+		url += "/activate.html?key="+key;
 		javaMail.doSendHtmlEmail("YLYAO激活邮件", "点击<br/><a href='"+url+"'>激活帐号"+user.getUsername()+"<a><br/>如无法点击则复制一下链接在浏览器中打开<br>"+url, email);
 		writeJson("true");
 	}

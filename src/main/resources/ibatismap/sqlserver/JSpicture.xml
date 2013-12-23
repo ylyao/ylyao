@@ -38,6 +38,19 @@
         ]]>
 		</selectKey>
 	</insert>
-
+	
+	<update id="updateJSpicture" parameterClass="com.ylyao.model.JSpictureBean">
+		update JS_PICTURE set MINI_URL = #miniUrl# where ID =$id$
+	</update>
+	
+	<delete id="delJSpicture" parameterClass="java.util.Map"> 
+            delete from JS_PICTURE 
+           	 where ID IN ( $ids$ )
+    </delete> 
+    
+    <delete id="deletePageBean" > 
+            delete from PAGEBEAN 
+            where INFOTYPE= 'PIC' AND INFOID in ( $ids$ )
+    </delete> 
 
 </sqlMap>

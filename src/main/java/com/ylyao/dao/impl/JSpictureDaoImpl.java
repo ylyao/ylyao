@@ -68,5 +68,23 @@ public class JSpictureDaoImpl extends BaseIbatis implements JSpictureDao {
 		Long id = (Long) getSqlMapClientTemplate().insert("pageSQL.insertPageBean",pb);
 		return id;
 	}
+
+	@Override
+	public void updateJSpicture(JSpictureBean jb) {
+		// TODO Auto-generated method stub
+		getSqlMapClientTemplate().update("JSpictureSQL.updateJSpicture", jb);
+	}
+
+	@Override
+	public void deleteISpictures(List<Long> delIds) {
+		// TODO Auto-generated method stub
+		if (delIds == null || delIds.isEmpty()){
+			return ;
+		}
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("ids",DateUtil.getIds(delIds));
+		getSqlMapClientTemplate().delete("JSpictureSQL.delJSpicture", map);
+		getSqlMapClientTemplate().delete("JSpictureSQL.deletePageBean", map);
+	}
 	
 }

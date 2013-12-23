@@ -18,4 +18,8 @@ public interface JSpictureDao {
 	public List<Object> findByIds(List<Long> ids);
 
 	public Long savePageBean(PageBean pb);
+
+	public void updateJSpicture(JSpictureBean jb);
+
+	public void deleteISpictures(List<Long> delIds);
 }

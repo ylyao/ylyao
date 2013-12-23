@@ -10,7 +10,12 @@ import java.applet.*;
 //具体使用方法
 //s_pic(大图片路径,生成小图片路径,大图片文件名,生成小图片文名,生成小图片宽度,生成小图片高度,是否等比缩放(默认为true))
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class DwindlePic {
+
+	public  Log log = LogFactory.getLog(getClass());
 
 	String InputDir; // 输入图路径
 	String OutputDir; // 输出图路径
@@ -34,13 +39,19 @@ public class DwindlePic {
 
 	@SuppressWarnings("restriction")
 	public boolean s_pic() {
+		Runtime rt = Runtime.getRuntime();
+		log.info("1="+rt.freeMemory());
 		// BufferedImage image;
 		// String NewFileName;
 		// 建立输出文件对象
 		File file = new File(OutputDir);
+		log.info("file="+rt.freeMemory());
+
 		FileOutputStream tempout = null;
 		try {
 			tempout = new FileOutputStream(file);
+
+		log.info("tempout="+rt.freeMemory());
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
 		}
@@ -50,8 +61,13 @@ public class DwindlePic {
 		MediaTracker mt = new MediaTracker(app);
 		try {
 			img = tk.getImage(InputDir);
+			log.info("img="+rt.freeMemory());
+
+			tk = null;
 			mt.addImage(img, 0);
 			mt.waitForID(0);
+			log.info("mt="+rt.freeMemory());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,18 +99,27 @@ public class DwindlePic {
 
 			g.drawImage(img, 0, 0, new_w, new_h, null);
 			g.dispose();
+			log.info("g="+rt.freeMemory());
 
+			img = null;
 			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(tempout);
 			try {
 				encoder.encode(buffImg);
 				tempout.close();
+				tempout = null;
 			} catch (IOException ex) {
 				System.out.println(ex.toString());
 			}
 			File  delFile = new File(InputDir);
+			log.info("delFile="+rt.freeMemory());
+
 			if (delFile.isFile() && delFile.exists()) {  
 				delFile.delete();
 			}
+			encoder = null;
+			buffImg = null;
+			buffImg = null;
+			mt = null;
 		}
 		return true;
 	}

@@ -9,12 +9,8 @@ package com.ylyao.util;
  * 最近修改日期：2010-6-10
  */
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

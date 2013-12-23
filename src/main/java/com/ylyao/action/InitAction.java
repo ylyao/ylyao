@@ -40,15 +40,16 @@ public class InitAction extends BaseAction{
 					log.info("启动自动删除缓存图片程序：");
 					List<MsgInfo> msgInfos;
 					while(true){
-						Thread.sleep(6000);
+						Thread.sleep(60000);
 						msgInfos = systemService.findMessageByDate("tempPic");
 						for (MsgInfo msg : msgInfos){
 							boolean success = (new File(msg.getMsgInfo())).delete();
 							if (success){
 								systemService.msgDealSuccess(msg.getId());
+								log.info("删除文件【"+msg.getMsgInfo()+"】成功！");
 							}else{
 								systemService.msgDealFail(msg.getId());
-								log.error("删除文件【"+msg.getMsgInfo()+"】失败！");
+								log.info("删除文件【"+msg.getMsgInfo()+"】失败！");
 							}
 						}
 					}
@@ -72,7 +73,7 @@ public class InitAction extends BaseAction{
 					List<OrderBean> orderBeans;
 					Long id = null;
 					while(true){
-						Thread.sleep(6000);
+						Thread.sleep(60000);
 						orderBeans = javaReciveMail.getOrder();
 						for (OrderBean order : orderBeans){
 							id = orderService.doOrder(order,webPath);

@@ -55,4 +55,16 @@ public class JSpictureServiceImpl implements JSpictureService {
 		return jspictureDao.savePageBean(pb);
 	}
 
+	@Override
+	public void updateJSpicture(JSpictureBean jb) {
+		// TODO Auto-generated method stub
+		jspictureDao.updateJSpicture(jb);
+	}
+
+	@Override
+	public void deleteISpictures(List<Long> delIds) {
+		// TODO Auto-generated method stub
+		jspictureDao.deleteISpictures(delIds);
+	}
+
 }
