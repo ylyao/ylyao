@@ -19,6 +19,10 @@
 		<result property="status" column="STATUS" />
 		<result property="bigId" column="BIG_ID" />
 		<result property="miniUrl" column="MINI_URL" />
+		<result property="miniWidth" column="MINI_WIDTH" />
+		<result property="miniHeight" column="MINI_HEIGHT" />
+		<result property="user" column="SUBMIT_USER" />
+		<result property="atUser" column="AT_USER" />
 	</resultMap>
 	
 	<resultMap class="PageBean" id="pageBeanList">

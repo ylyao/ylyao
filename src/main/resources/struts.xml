@@ -32,4 +32,9 @@
         <action name="initAction_*" class="com.ylyao.action.InitAction" method="{1}">
         </action>
 	</package>
+	
+	<package name="infoPageAction" extends="struts-default">
+        <action name="infoPage_*" class="com.ylyao.action.InfoPageAction" method="{1}">
+        </action>
+	</package>
 </struts>

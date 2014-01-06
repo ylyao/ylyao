@@ -22,6 +22,14 @@ public class JSpictureBean {
 	
 	private String miniUrl;
 	
+	private String miniWidth;
+	
+	private String miniHeight;
+	
+	private String user;
+	
+	private String atUser;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +63,15 @@ public class JSpictureBean {
 	}
 
 	public String getRemark() {
+//		if (remark != null ){
+//			remark = remark.replace("　", " ");
+//			remark = remark.trim().replaceAll(" ", "　");
+//			remark = remark.replaceAll("　　", "<br>　　");
+//			remark = "　　"+remark;
+//		}
+		if (remark.replaceAll("　", " ").trim().isEmpty()){
+			remark = "";
+		}
 		return remark;
 	}
 
@@ -92,6 +109,38 @@ public class JSpictureBean {
 
 	public void setMiniUrl(String miniUrl) {
 		this.miniUrl = miniUrl;
+	}
+
+	public String getMiniWidth() {
+		return miniWidth;
+	}
+
+	public void setMiniWidth(String miniWidth) {
+		this.miniWidth = miniWidth;
+	}
+
+	public String getMiniHeight() {
+		return miniHeight;
+	}
+
+	public void setMiniHeight(String miniHeight) {
+		this.miniHeight = miniHeight;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getAtUser() {
+		return atUser;
+	}
+
+	public void setAtUser(String atUser) {
+		this.atUser = atUser;
 	}
 	
 }
