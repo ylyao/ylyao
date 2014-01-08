@@ -30,6 +30,8 @@
 		<result property="infoId" column="INFOID" />
 		<result property="updateTime" column="UPDATETIME" />
 		<result property="type" column="INFOTYPE" />
+		<result property="user" column="SUBMIT_USER" />
+		<result property="level" column="INFO_LEVEL" />
 	</resultMap>
 
 	<!--政策观察详细  -->
@@ -39,8 +41,11 @@
 			FROM PAGEBEAN
 			WHERE (ID NOT IN
             	(SELECT TOP $sizes$ id
-         			FROM PAGEBEAN
-        		 ORDER BY UPDATETIME DESC,ID DESC))
+         			FROM PAGEBEAN 
+         				WHERE INFO_LEVEL IS NULL OR ( INFO_LEVEL = #level# AND SUBMIT_USER = #user# )
+        		 ORDER BY UPDATETIME DESC,ID DESC)
+        		 AND INFO_LEVEL IS NULL OR ( INFO_LEVEL = #level# AND SUBMIT_USER = #user# )
+        	 )
 			 ORDER BY UPDATETIME DESC,ID DESC
       ]]>
 	</select>
@@ -55,7 +60,7 @@
 	<insert id="insertPageBean" parameterClass="com.ylyao.model.PageBean">
 		<selectKey resultClass="java.lang.Long" keyProperty="id">
         <![CDATA[
-        	insert into PAGEBEAN (INFOID,UPDATETIME,INFOTYPE) values(#infoId#,#updateTime#,#type#)
+        	insert into PAGEBEAN (INFOID,UPDATETIME,INFOTYPE,SUBMIT_USER,INFO_LEVEL) values(#infoId#,#updateTime#,#type#,#user#,#level#)
         	SELECT SCOPE_IDENTITY() AS ID 
         ]]>
 		</selectKey>

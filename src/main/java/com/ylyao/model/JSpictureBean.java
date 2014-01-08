@@ -63,12 +63,6 @@ public class JSpictureBean {
 	}
 
 	public String getRemark() {
-//		if (remark != null ){
-//			remark = remark.replace("　", " ");
-//			remark = remark.trim().replaceAll(" ", "　");
-//			remark = remark.replaceAll("　　", "<br>　　");
-//			remark = "　　"+remark;
-//		}
 		if (remark.replaceAll("　", " ").trim().isEmpty()){
 			remark = "";
 		}

@@ -40,11 +40,13 @@ public class JSpictureDaoImpl extends BaseIbatis implements JSpictureDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PageBean> findPageInfo(int pagesize, int page) {
+	public List<PageBean> findPageInfo(int pagesize, int page,String user,String level) {
 		// TODO Auto-generated method stub
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("pagesize", String.valueOf(pagesize));
 		map.put("sizes", String.valueOf((page-1)*pagesize));
+		map.put("user",user);
+		map.put("level", level);
 		return getSqlMapClientTemplate()
 				.queryForList("pageSQL.getPage",map);
 	}

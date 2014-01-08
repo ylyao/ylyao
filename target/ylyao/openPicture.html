@@ -55,9 +55,7 @@
 	}
 	
 	.pic{
-		float:left;
 		width:800px;
-		margin:0px 0px 0px 200px;
 	}
 	
 	.font{
@@ -72,29 +70,27 @@
 	}
 	
 	body{
-		background-color: #ccc;
+		background-color: #fff;
 	}
 </style>
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		var url = window.opener.document.getElementById('tempUrl').innerHTML;
+		var tempId = window.opener.document.getElementById('tempId').innerHTML;
 		jQuery.ajax("jsPicture_findBigPicture.do", {
 			type : "post",
 			async : false,
 			data : {
-				"bigUrl" : url
+				"infoid" : tempId
 			},
 			success : function(value) {
-				$("#bigPicture").append("<img style='max-width:800px;margin:10px 0px 5px 0px;' src="+value+"></img>");
+				$("#bigPicture").append("<img style='max-width:800px;margin:10px 0px 5px 0px;' src="+value[0].miniPath+"></img><br>"+value[0].remark);
 			}
 		});
 	});
 </script>
 </head>
 <body>
-	<div class="pic">
-		<div id="bigPicture" class="bigPicture"></div>
-	</div>
+	<div id="bigPicture" class="bigPicture"></div>
 </body>
 </html>

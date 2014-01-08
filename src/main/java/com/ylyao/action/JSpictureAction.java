@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -38,6 +37,12 @@ public class JSpictureAction extends BaseAction{
 
 	private static final long serialVersionUID = -9059235694531748056L;
 	
+	private static final int MINI_WIDTH =1000;
+	
+	private static final int MINI_HEIGHT = 8000;
+	
+	private static final int DEFAULT_WIDTH = 270;
+	
 	private JSpictureService jspictureService;
 	
 	private SystemService systemService;
@@ -54,12 +59,18 @@ public class JSpictureAction extends BaseAction{
 	
 	private Long infoid;
 	
+	private String level;
+	
+	/**
+	 * 上传图片处理
+	 * @throws Exception
+	 */
 	public void dealJSpicture() throws Exception{
-		if (this.getSession().get("user") == null){
+		User user= (User) getSession().get("user");
+		if (user == null){
 			writeJson("请先登录！");
 			return ;
 		}
-		User user = (User) getSession().get("user");
 		bigUrl.replace("\\n", "");
 		String[] urls = bigUrl.split(";");
 		JSpictureBean jsBean = null;
@@ -83,7 +94,7 @@ public class JSpictureAction extends BaseAction{
 			jsBean.setStatus("ACTIVE");
 			String miniPath = this.dealMini(url.trim());
 			if (miniPath != null){
-				mypic.s_pic(getWebPath()+miniPath, getWebPath()+miniPath.replace(".", "_mini."), "", "", 300,8000, true);
+				mypic.s_pic(getWebPath()+miniPath, getWebPath()+miniPath.replace(".", "_mini."), "", "", MINI_WIDTH,MINI_HEIGHT, true);
 				jsBean.setMiniUrl(miniPath.replace(".", "_mini."));
 				mypic = null;
 			}else{
@@ -95,24 +106,14 @@ public class JSpictureAction extends BaseAction{
 				}
 				return ;
 			}
-			File file = new File(getWebPath()+jsBean.getMiniUrl());
-	        try {
-				BufferedImage sourceImg =ImageIO.read(new FileInputStream(file));
-				jsBean.setMiniWidth(String.valueOf(sourceImg.getWidth()));
-				jsBean.setMiniHeight(String.valueOf(sourceImg.getHeight()));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}   
-
+			lazySize(jsBean);
 			Long infoId = jspictureService.saveJSpicture(jsBean);
 			PageBean pb = new PageBean();
 			pb.setInfoId(infoId);
 			pb.setType("PIC");
 			pb.setUpdateTime(new Date());
+			pb.setLevel(level);
+			pb.setUser(user.getUsername());
 			Long id = jspictureService.savePageBean(pb);
 			log.info("add "+i+" picture success!"+id);
 		}
@@ -122,6 +123,29 @@ public class JSpictureAction extends BaseAction{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void lazySize(JSpictureBean jsBean){
+		File file = new File(getWebPath()+jsBean.getMiniUrl());
+        try {
+			BufferedImage sourceImg =ImageIO.read(new FileInputStream(file));
+			int width = sourceImg.getWidth();
+			int height = sourceImg.getHeight();
+			int miniWidth = width;
+			int miniHeight = height;
+			if (width > DEFAULT_WIDTH){
+				miniWidth = DEFAULT_WIDTH;
+				miniHeight =( miniWidth * height ) / width ;
+			}
+			jsBean.setMiniWidth(String.valueOf(miniWidth));
+			jsBean.setMiniHeight(String.valueOf(miniHeight));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	public String dealMini(String urlPath) {
@@ -214,10 +238,11 @@ public class JSpictureAction extends BaseAction{
 	}
 	
 	public void findAllInfo() throws IOException{
-		if (this.getSession().get("user") == null){
+		User user = (User) getSession().get("user");
+		if (user == null){
 			writeJson(new ArrayList<PageBean>(), new String[]{"id","url","remark","miniUrl","miniWidth","miniHeight","user"}, null);
 		}
-		List<PageBean> list = jspictureService.findPageInfo(pagesize,page);
+		List<PageBean> list = jspictureService.findPageInfo(pagesize,page,user.getUsername(),"mySelf");
 		List<Object> result = new ArrayList<Object>();
 		List<Long> picList = new ArrayList<Long>();
 		for (PageBean pg : list){
@@ -301,20 +326,9 @@ public class JSpictureAction extends BaseAction{
 				mypic = new DwindlePic();
 				mypic.s_pic(getWebPath() + miniPath,
 						getWebPath() + miniPath.replace(".", "_mini."), "", "",
-						300, 800, true);
+						MINI_WIDTH,MINI_HEIGHT, true);
 				jb.setMiniUrl(miniPath.replace(".", "_mini."));
-				File file = new File(getWebPath()+jb.getMiniUrl());
-		        try {
-					BufferedImage sourceImg =ImageIO.read(new FileInputStream(file));
-					jb.setMiniWidth(String.valueOf(sourceImg.getWidth()));
-					jb.setMiniHeight(String.valueOf(sourceImg.getHeight()));
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+				lazySize(jb);
 				jspictureService.updateJSpicture(jb);
 				log.info("文件重新加载成功："+jb.getMiniUrl());
 				resultMap.put("info", "图片加载成功!");
@@ -331,78 +345,6 @@ public class JSpictureAction extends BaseAction{
 			}
 		}
 
-	}
-	
-	public void resetAllPic() throws Exception{
-		File file = null;
-		List<PageBean> list = jspictureService.findPageInfo(10000, 1);
-		List<Object> result = new ArrayList<Object>();
-		List<Long> picList = new ArrayList<Long>();
-		List<Long> delIds = new ArrayList<Long>();
-		Map<Long,Long> picMap = new HashMap<Long,Long>();
-		for (PageBean pg : list){
-			if (pg.getType().equals("PIC")){
-				picList.add(pg.getInfoId());
-				picMap.put(pg.getInfoId(), pg.getInfoId());
-			}
-		}
-		result = jspictureService.findByIds(picList);
-		JSpictureBean jb = null;
-		String miniPath = "";
-		DwindlePic mypic = null;
-		Map<String,String> map = new HashMap<String,String>();
-		for (Object obj : result){
-			jb = (JSpictureBean)obj;
-			picMap.remove(jb.getId());
-			if (jb.getUrl() == null){
-				delIds.add(jb.getId());
-				continue;
-			}
-			miniUrl = jb.getMiniUrl();
-			file = new File(getWebPath() + miniUrl);
-			if (!file.exists()) {
-				log.info("文件："+miniUrl+"不存在，重新加载！");
-				miniPath = this.dealMini(jb.getUrl().trim());
-				if (miniPath != null) {
-					mypic = new DwindlePic();
-					mypic.s_pic(getWebPath() + miniPath, getWebPath()
-							+ miniPath.replace(".", "_mini."), "", "", 400,
-							1200, true);
-					jb.setMiniUrl(miniPath.replace(".", "_mini."));
-				} else {
-					delIds.add(jb.getId());
-					log.info("文件重新加载失败："+jb.getMiniUrl());
-					continue;
-				}
-				mypic = null;
-				jspictureService.updateJSpicture(jb);
-				log.info("文件重新加载成功："+jb.getMiniUrl());
-				map.put(new File(getWebPath()+jb.getMiniUrl()).getName(), jb.getMiniUrl());
-			}else{
-				map.put(file.getName(),file.getName());
-			}
-		}
-		if (picMap.size() > 0){
-			Set<Long> keySets = picMap.keySet();
-			for (long key : keySets) {
-				delIds.add(key);
-				log.info("清楚数据："+key);
-			}
-		}
-		jspictureService.deleteISpictures(delIds);
-		file = new File(getWebPath()+"pictures");
-		String[] files = file.list();
-		boolean suc = false;
-		for (String fileName : files){
-			if (fileName.equals("temp")){
-				continue;
-			}
-			if (map.get(fileName) == null){
-				suc = (new File(getWebPath()+"pictures\\"+fileName)).delete();
-				log.info("删除文件"+fileName+" "+suc);
-			}
-		}
-		writeJson("重置成功！");
 	}
 	
 	public void delThis() throws Exception{
@@ -479,6 +421,14 @@ public class JSpictureAction extends BaseAction{
 
 	public void setInfoid(Long infoid) {
 		this.infoid = infoid;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 	
 }

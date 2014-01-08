@@ -12,7 +12,7 @@ public interface JSpictureService {
 
 	public List<JSpictureBean> findBigPicture();
 
-	public List<PageBean> findPageInfo(int pagesize, int page);
+	public List<PageBean> findPageInfo(int pagesize, int page, String string, String string2);
 
 	public List<Object> findByIds(List<Long> ids);
 

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ylyao 相册</title>
 <script src="js/jquery-1.8.2.js"></script>
 <script src="js/blocksit.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
@@ -17,10 +17,10 @@
 	}
 	
 	.loadMore{
-		position:relative;
+		position:absolute;
 		width:100px;
-		margin-left: auto;
-		margin-right: auto;
+		top:600px;
+		right:50px;
 	}
 	
 	#container{
@@ -65,20 +65,102 @@
 		-webkit-box-shadow: 0 1px 13px rgba(34,25,25,1);
 	}
 	
+	.upload{
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:30px;
+		height:20px;
+		background-position:-30px -24px;
+		position: absolute;
+		z-index:9999;
+		right:50px;
+	}
+	
+	.openload{
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:20px;
+		height:20px;
+		background-position:-0px -50px;
+		position: absolute;
+		z-index:9999;
+		right:30px;
+		top:12px;
+	}
+	
+	.closeload{
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:20px;
+		height:20px;
+		background-position:-0px -70px;
+		position: absolute;
+		z-index:9999;
+		right:30px;
+		top:11px;
+	}
+	
+	.more{
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:30px;
+		background-position:-0px -30px;
+		position: absolute;
+		z-index:9999;
+	}
+	
 	body{
 		background-color: #fff;
+		font-family: "microsoft yahei","宋体","arial";
+	}
+	
+	.reload{
+		position: absolute;
+		display:none;
+		z-index:9999;
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:20px;
+		height:20px;
+		background-position:-90px -0px;
+		right:30px;
+		cursor:pointer;
+	}
+	
+	.del{
+		position: absolute;
+		display:none;
+		z-index:9999;
+		background-image:url(images/ylyao.png);
+		background-repeat:no-repeat;
+		width:20px;
+		height:20px;
+		background-position:-40px -0px;
+		right:10px;
+		cursor:pointer;
 	}
 </style>
 <script type="text/javascript">
-	var open = 0;
+	var openFlag = 0;
+	
+	var loading = false;
+	
+	window.onscroll = function(){ 
+	    var t = document.documentElement.scrollTop || document.body.scrollTop;
+	    var totle = $(document.body).height();
+	    if (totle / t <= 2 && loading == false){
+			loading = true;
+			loadMore();
+	    }
+	} 
 	
 	function openLoad(){
-		if (open == 0){
-			open = 1;
-			$("#openReload").html("关闭加载");
+		if (openFlag == 0){
+			openFlag = 1;
+			$("#openReload").addClass("closeload") .removeClass("openload");
 		}else{
-			open = 0;
-			$("#openReload").html("开启加载");
+			openFlag = 0;
+			$("#openReload").addClass("openload") .removeClass("closeload");
 		}
 	}
 
@@ -92,6 +174,7 @@
 			blockElement: '.grid'
 		});
 		$(".loadMore").show();
+		loading = false;
 	}
 	
 	var page = 0;
@@ -124,44 +207,45 @@
 	});
 	
 	function mouseIn(id){
-		if (open == 1){
+		if (openFlag == 1){
 			$("#reload"+id).show();
+			$("#del"+id).show();
 		}
 	}
 	
 	function mouseOut(id){
 		$("#reload"+id).hide();
+		$("#del"+id).hide();
 	}
 	
 	function makePicture(){
 		var divModel = "";
 		$.each(data,function(i,val){
-		    divModel += '<div class="grid" data-size="1" onmouseout="mouseOut('+val.id+')" onmouseover="mouseIn('+val.id+')"><div id="'+val.id+'" style="display:none;">'+val.url+'</div><div id="reload'+val.id+'" onclick="reloadThis('+val.id+')" style=" position: absolute;display:none;z-index:9999;"><img title="reload" src="img/loading.gif"></div>';
-		    divModel +='<div class="imgholder"><a href="javascript:openPicture('+val.id+');" ><img src="'+val.miniUrl+'" /></a></div>';
-		    if (val.remark != ''){
-		    	divModel +='<div style="padding:0px 0px 15px 10px;">';
-		    	divModel +='<div>______________________________________</div>';
-			    divModel +='<div>'+val.remark+'</div>';
-			    divModel +='</div>';
-		    }
+		    divModel += '<div class="grid" data-size="1" onmouseout="mouseOut('+val.id+')" onmouseover="mouseIn('+val.id+')">';
+		    divModel +='<div class="imgholder"><a href="javascript:openPicture('+val.id+');" ><img width="'+val.miniWidth+'px" height="'+val.miniHeight+'px" id="img'+val.id+'" src="'+val.miniUrl+'" /></a></div>';
+		    divModel +='<div style="padding:0px 0px 25px 10px;">';
+		    divModel +='<div style="position:absolute;right:20px;">'+val.user+'</div>';
+			if (val.remark != ''){
+				divModel +='<div><br>'+val.remark+'</div>';
+			}
+			divModel +='<div id="reload'+val.id+'" onclick="reloadThis('+val.id+')" class="reload" title="重新加载">&nbsp;</div>';
+			divModel +='<div id="del'+val.id+'" onclick="delThis('+val.id+')" class="del" title="删除">&nbsp;</div>';
+			divModel +='</div>';
 		    divModel +='</div>'
 		});
 		$("#tempSpace").empty();
 		$("#tempSpace").hide();
 		$("#tempSpace").append(divModel);
+		setTimeout("init()", 1000);
 	}
 
 	function loadMore() {
 		getInfo();
 		makePicture();
-		setTimeout("init()", 1000);
 	}
 
-	setTimeout("init()", 1000);
-
 	function openPicture(id){
-		var url = $("#" + id).html();
-		$("#tempUrl").html(url);
+		$("#tempId").html(id);
 		window.open('openPicture.html');
 	}
 	
@@ -175,24 +259,44 @@
 	        },
 			success : function(value) {
 				data = value;
+				alert(data[0].info);
 				closeMask();
 			}
 	});
 	}
 	
+	function delThis(id){
+		openMask();
+		jQuery.ajax("jsPicture_delThis.do",{
+			type : "post",
+			async : false,
+			data:{
+	        	"infoid":id
+	        },
+			success : function(value) {
+				data = value;
+				alert(data[0].info);
+				$("#img"+id).attr("src",data[0].url);
+				closeMask();
+			}
+		});
+	}
+	
 </script>
 </head>
 <body>
-	<div><a href="javascript:openLoad()"><span id="openReload" style="position: absolute;z-index:9999;color:#ccc">开启加载</span></a></div>
-	<div id="tempUrl" style="display:none;"></div>
+	<div><a href="javascript:openLoad()">
+	<span id="openReload" class="openload" title="管理">
+	&nbsp;
+	</span></a></div>
+	<div><a href="upload.html" title="上传">
+	<span class="upload">
+	&nbsp;
+	</span></a></div>
+	<div id="tempId" style="display:none;"></div>
 	<div id="container">
 	</div>
-	<div class="loadMore"><a href="javascript:loadMore()"><span style="color:#ccc">more</span></a></div>
-	<div id='bigPicture' class="bigPicture">
-		
-	</div>
-	<div id="tempSpace">
-		
-	</div>
+	<div id='bigPicture' class="bigPicture"></div>
+	<div id="tempSpace"></div>
 </body>
 </html>

@@ -13,7 +13,7 @@ public interface JSpictureDao {
 
 	public List<JSpictureBean> findBigPicture();
 
-	public List<PageBean> findPageInfo(int pagesize, int page);
+	public List<PageBean> findPageInfo(int pagesize, int page, String user, String level);
 
 	public List<Object> findByIds(List<Long> ids);
 

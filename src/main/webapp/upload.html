@@ -6,21 +6,76 @@
 	href="css/css3-formular-styles.css" type="text/css" media="screen">
 <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<style>
+	.info{
+		min-height:50px;
+		background:#fff;
+		font-size:12px;
+		float:right;
+		width:450px;
+		box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-moz-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-webkit-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-webkit-transition: top 1s ease, left 1s ease;
+		-moz-transition: top 1s ease, left 1s ease;
+		-o-transition: top 1s ease, left 1s ease;
+		-ms-transition: top 1s ease, left 1s ease;
+		border-radius: 8px;
+	}
+	
+	.info:hover {
+		box-shadow: 0 1px 13px rgba(34,25,25,1);
+		-moz-box-shadow: 0 1px 13px rgba(34,25,25,1);
+		-webkit-box-shadow: 0 1px 13px rgba(34,25,25,1);
+	}
 
+	.infoSpan{
+		cursor:pointer;
+		display:inline-block;
+		width:40px;
+		height:40px;
+		text-align:center;
+		border:1px solid #eee;
+		background:#fff;
+		margin: 5px 0px 0px 5px;
+	}
+	
+	.clickOn{
+		color:red;
+		cursor:pointer;
+		display:inline-block;
+		width:40px;
+		height:40px;
+		text-align:center;
+		border:1px solid red;
+		background:#fff;
+		margin: 5px 0px 0px 5px;
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		createMask();
+		$(".infoSpan").click(function(){
+			$(".clickOn").addClass("infoSpan").removeClass("clickOn");
+			$(this).addClass("clickOn").removeClass("infoSpan");
+			$(".infoSpan").click(function(){
+				$(".clickOn").addClass("infoSpan").removeClass("clickOn");
+				$(this).addClass("clickOn").removeClass("infoSpan");
+			});
+		});
 	});
 
 	function upload() {
 		openMask();
 		var url = $("#firstname").val();
 		var remark = $("#content").val();
+		var level = $(".clickOn").attr("val");
 		jQuery.ajax("jsPicture_dealJSpicture.do", {
 			type : "post",
 			data : {
 				"bigUrl" : url,
-				"remark" : remark
+				"remark" : remark,
+				"level"  : level
 			},
 			success : function(data) {
 				alert(data);
@@ -57,11 +112,21 @@
 						rows="7" name="firstname" id="firstname"></textarea>
 				<li class="last"><input name="submit" id="preview" value="Preview"
 					type="submit" onclick="previewPic()" /></li>
+				<li><label for="info">INFO:</label> 
+					<div id="info" class="info">
+						<div style="margin: 10px 10px 10px 10px;">
+							<span>权限：</span>
+							<span class="infoSpan" val="mySelf">自己可见</span>
+							<span class="clickOn" val="open">所有人可见</span>
+						</div>
+					</div>
+				</li>
 				<li><label for="content">REMARK:</label> <textarea cols="70"
 						rows="7" name="content" id="content"></textarea></li>
 				<li class="last">
 					<input name="submit" id="submit" value="Submit" type="submit"
 					onclick="upload()" /></li>
+				
 			</ol>
 		</fieldset>
 		<br />

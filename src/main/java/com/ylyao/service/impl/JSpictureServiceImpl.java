@@ -38,9 +38,9 @@ public class JSpictureServiceImpl implements JSpictureService {
 	}
 
 	@Override
-	public List<PageBean> findPageInfo(int pagesize, int page) {
+	public List<PageBean> findPageInfo(int pagesize, int page,String user,String level) {
 		// TODO Auto-generated method stub
-		return jspictureDao.findPageInfo(pagesize,page);
+		return jspictureDao.findPageInfo(pagesize,page,user,level);
 	}
 
 	@Override

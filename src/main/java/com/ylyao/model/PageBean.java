@@ -11,6 +11,10 @@ public class PageBean {
 	private Date updateTime;
 	
 	private String type;
+	
+	private String user;
+	
+	private String level;
 
 	public Long getId() {
 		return id;
@@ -42,6 +46,22 @@ public class PageBean {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 	
 }

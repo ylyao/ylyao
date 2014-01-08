@@ -24,6 +24,7 @@
 			},
 			success : function(data) {
 				alert(data);
+	    		window.location.href="blocksit.html";
 				closeMask();
 			}
 		});
@@ -40,6 +41,11 @@
 			}
 		});
 	}
+	
+	function previewPic(){
+		var picUrl = $("#firstname").val();
+		window.open(picUrl);
+	}
 </script>
 </head>
 <body>
@@ -49,13 +55,13 @@
 				<li><label for="firstname">URL:(jpg,png)</label>
 				<textarea cols="70"
 						rows="7" name="firstname" id="firstname"></textarea>
+				<li class="last"><input name="submit" id="preview" value="Preview"
+					type="submit" onclick="previewPic()" /></li>
 				<li><label for="content">REMARK:</label> <textarea cols="70"
 						rows="7" name="content" id="content"></textarea></li>
 				<li class="last">
-					<input name="submit" id="submit" value="Absenden" type="submit"
+					<input name="submit" id="submit" value="Submit" type="submit"
 					onclick="upload()" /></li>
-				<li class="last"><input name="submit" id="submit" value="reLoad"
-					type="submit" onclick="resetPic()" /></li>
 			</ol>
 		</fieldset>
 		<br />
