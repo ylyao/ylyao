@@ -233,6 +233,13 @@ public class JSpictureAction extends BaseAction{
 			msgInfo.setType("tempPic");
 			systemService.insertMessage(msgInfo);
 		}
+		SystemBean sb = systemService.findSystemInfo("ylyaoUrl");
+		String tdcUrl = "";
+		if (sb != null){
+			tdcUrl = sb.getValue();
+		}
+		tdcUrl += "/openPicture.html?infoId="+infoid;
+		tdcDeal(tdcUrl,"big"+infoid);
 		resultMap.put("miniPath", miniPath);
 		writeJson(resultMap,null,null);
 	}

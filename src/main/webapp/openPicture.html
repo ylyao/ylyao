@@ -89,9 +89,16 @@
 	}
 </style>
 <script type="text/javascript">
+	function getQueryString(name) {
+    	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+   		var r = window.location.search.substr(1).match(reg);
+    	if (r != null) 
+    		return unescape(r[2]); 
+    	return null;
+    }
 
 	$(document).ready(function() {
-		var tempId = window.opener.document.getElementById('tempId').innerHTML;
+		var tempId = getQueryString("infoId");
 		jQuery.ajax("jsPicture_findBigPicture.do", {
 			type : "post",
 			async : false,
