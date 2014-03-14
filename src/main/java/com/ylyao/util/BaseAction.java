@@ -37,6 +37,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.opensymphony.xwork2.ActionSupport;
 import com.ylyao.action.MatrixToImageWriter;
 
@@ -182,10 +183,8 @@ public class BaseAction extends ActionSupport implements SessionAware{
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void tdcDeal(String url,String fileName){
+	public void tdcDeal(String url,String fileName,int width,int height){
 		String text = url;
-		int width = 100;
-		int height = 100;
 		// 二维码的图片格式
 		String format = "gif";
 		String filePath = getWebPath()+"pictures\\tdc\\"+fileName+"."+format;
@@ -196,7 +195,9 @@ public class BaseAction extends ActionSupport implements SessionAware{
 		
 		Hashtable hints = new Hashtable();
 		// 内容所使用编码
+		hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 		hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+		hints.put(EncodeHintType.MARGIN, 1);
 		BitMatrix bitMatrix;
 		try {
 			bitMatrix = new MultiFormatWriter().encode(text,

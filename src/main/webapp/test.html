@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content=”width=device-width, initial-scale=1.0, maximum-scale=1.0,  user-scalable=0;” name=”viewport” />
+<meta content=”yes” name=”apple-mobile-web-app-capable” />
+<meta content=”black” name=”apple-mobile-web-app-status-bar-style”  />
+<meta content=”telephone=no” name=”format-detection” />
+<title>ylyao 相册</title>
+<script src="js/jquery-1.8.2.js"></script>
+<script src="js/blocksit.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".loadMore").hide();
+		$("#container").hide();
+		createMask();
+
+		getInfo();
+		$("#container").empty();
+		makePicture();
+	});
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

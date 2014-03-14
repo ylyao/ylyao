@@ -1,0 +1,215 @@
+public List<Long> getSunBankId(long id){
+		List<Long> list = new ArrayList<Long>();
+		for (int i = 1; i < 10; i++){
+			list.add(id*10+i);
+		}
+		list.add(id);
+		return list;
+	}
+	
+	public int getCount(long bankid){
+		List<Long> listId = new ArrayList(); 
+		// 第一步：调用方法获取改机构下所有下属机构（1级、2寄、3级都在里面）
+		// 第二步：调用sql,查出第一步返回的机构列表在数据库中数据数量。
+		// 第三步：返回数据
+		return 1;
+	}
+	
+	public void loadTreeNew(){
+		String[] strs = params.split(",");
+		TreeBean root = new TreeBean();
+		long bankId = 1001;
+		List<Long> banks = getSunBankId(bankId); // 查出需要返回的机构的ID
+		TreeBean tb;
+		List<TreeBean> tbs = new ArrayList<TreeBean>();
+		for (Long orgId : banks){
+			tb = new TreeBean();
+			tb.setValue(String.valueOf(orgId));    //
+			tb.setCount(getCount(orgId));    		  //计算每个所属行对应的数量
+			tbs.add(tb);
+			List<TestBean> values = new ArrayList<TestBean>();  //查询该orgid对应的数据
+			countTree(tb,0,strs,values);
+		}
+		root.setChildren(tbs);
+		
+	}
+	
+	public void countTree(TreeBean root,int i,String[] strs,List<TestBean> values){
+		if (i >= strs.length){
+			return ; 
+		}
+		if (strs[i].equals("状态")){
+			List<TestBean> values1 = new ArrayList<TestBean>();
+			List<TestBean> values2 = new ArrayList<TestBean>();
+			List<TestBean> values3 = new ArrayList<TestBean>();
+			List<TestBean> values4 = new ArrayList<TestBean>();
+			List<TestBean> values5 = new ArrayList<TestBean>();
+			TreeBean tb1 = new TreeBean();
+			tb1.setValue("状态A");
+			TreeBean tb2 = new TreeBean();
+			tb1.setValue("状态B");
+			TreeBean tb3 = new TreeBean();
+			tb1.setValue("状态C");
+			TreeBean tb4 = new TreeBean();
+			tb1.setValue("状态D");
+			TreeBean tb5 = new TreeBean();
+			tb1.setValue("状态E");
+			List<TreeBean> tbs = new ArrayList<TreeBean>();
+			tbs.add(tb1);
+			tbs.add(tb2);
+			tbs.add(tb3);
+			tbs.add(tb4);
+			tbs.add(tb5);
+			root.setChildren(tbs);
+			
+			for (TestBean value : values){
+				if (value.getTest2().equals("状态A")){
+					values1.add(value);
+				}else if (value.getTest2().equals("状态B")){
+					values2.add(value);
+				}else if (value.getTest2().equals("状态C")){
+					values3.add(value);
+				}else if (value.getTest2().equals("状态D")){
+					values4.add(value);
+				}else if (value.getTest2().equals("状态E")){
+					values5.add(value);
+				}
+			}
+			tb1.setCount(values1.size());
+			tb2.setCount(values2.size());
+			tb3.setCount(values3.size());
+			tb4.setCount(values4.size());
+			tb5.setCount(values5.size());
+			countTree(tb1,i+1,strs,values1);
+			countTree(tb2,i+1,strs,values2);
+			countTree(tb3,i+1,strs,values3);
+			countTree(tb4,i+1,strs,values4);
+			countTree(tb5,i+1,strs,values5);
+		}else if (strs[i].equals("分类")){
+			List<TestBean> values1 = new ArrayList<TestBean>();
+			List<TestBean> values2 = new ArrayList<TestBean>();
+			List<TestBean> values3 = new ArrayList<TestBean>();
+			TreeBean tb1 = new TreeBean();
+			tb1.setValue("分类A");
+			TreeBean tb2 = new TreeBean();
+			tb1.setValue("分类B");
+			TreeBean tb3 = new TreeBean();
+			tb1.setValue("分类C");
+			List<TreeBean> tbs = new ArrayList<TreeBean>();
+			tbs.add(tb1);
+			tbs.add(tb2);
+			tbs.add(tb3);
+			root.setChildren(tbs);
+			
+			for (TestBean value : values){
+				if (value.getTest3().equals("分类A")){
+					values1.add(value);
+				}else if (value.getTest3().equals("分类B")){
+					values2.add(value);
+				}else if (value.getTest3().equals("分类C")){
+					values3.add(value);
+				}
+			}
+			tb1.setCount(values1.size());
+			tb2.setCount(values2.size());
+			tb3.setCount(values3.size());
+			countTree(tb1,i+1,strs,values1);
+			countTree(tb2,i+1,strs,values2);
+			countTree(tb3,i+1,strs,values3);
+		}else if (strs[i].equals("方向")){
+			List<TestBean> values1 = new ArrayList<TestBean>();
+			List<TestBean> values2 = new ArrayList<TestBean>();
+			TreeBean tb1 = new TreeBean();
+			tb1.setValue("方向A");
+			TreeBean tb2 = new TreeBean();
+			tb1.setValue("方向B");
+			List<TreeBean> tbs = new ArrayList<TreeBean>();
+			tbs.add(tb1);
+			tbs.add(tb2);
+			root.setChildren(tbs);
+			
+			for (TestBean value : values){
+				if (value.getTest3().equals("方向A")){
+					values1.add(value);
+				}else if (value.getTest3().equals("方向B")){
+					values2.add(value);
+
+				}
+			}
+			tb1.setCount(values1.size());
+			tb2.setCount(values2.size());
+			countTree(tb1,i+1,strs,values1);
+			countTree(tb2,i+1,strs,values2);
+		}
+	}
+	
+	public void loadTree(){
+		//查询字段名称（顺序） strs
+		String[] strs = params.split(",");
+		//根节点root
+		TreeBean root = new TreeBean();
+		String param = " "+strs[0]+" in ("+rootKey+") "; //初始化条件，第一个机构id,或者状态 rootKey '111','1111','11111'
+		
+		//数组strs、和字符串 rootKey 需要自己组装。
+		//strs[0] 位置放置 rootKey 对应的字段
+		
+		getTreeChild(root,0,strs,param);
+		count(root,0,strs," 1=1 ");
+		
+		try {
+			this.writeJson(root.getChildren(),new String[]{"value","count","children"},null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void count(TreeBean root,int i,String[] strs,String param){
+		Map<String,String> map = new HashMap<String,String>();
+		if (root.getChildren() != null){
+			if (root.getValue() != null){
+				param += " and "+strs[i-1]+"='"+root.getValue()+"'";
+			}
+			int count = 0;
+			for (TreeBean tb : root.getChildren()){
+				count(tb,i+1,strs,param);
+				count += tb.getCount();
+			}
+			root.setCount(count);
+		}else{
+			param += " and "+strs[i-1]+"='"+root.getValue()+"'";
+			map.put("param", param);
+			int count = testService.getCount(map);    //调sql查数据
+			root.setCount(count);
+		}
+	}
+	
+	private void getTreeChild(TreeBean root,int i,String[] strs,String param){
+		if (i >= strs.length){
+			return ;
+		}
+		Map<String,String> map = new HashMap<String,String>();
+		if (root.getChildren() == null){
+			if (root.getValue() == null){
+				if (i == 0){
+					map.put("param", param);
+				}else{
+					return ;
+				}
+			}else{
+				param += " and "+strs[i-1]+"='"+root.getValue()+"'";
+				map.put("param", param);
+			}
+			map.put("key", strs[i]);
+			List<TreeBean> tbs = testService.getTree(map);   //调sql查数据
+			root.setChildren(tbs);
+			for (TreeBean tb : tbs){
+				tb.setParent(root);
+			}
+			getTreeChild(root,i+1,strs,param);
+		}else{
+			for (TreeBean tb : root.getChildren()){
+				getTreeChild(tb,i,strs,param);
+			}
+		}
+	}

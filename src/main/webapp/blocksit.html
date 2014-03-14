@@ -256,7 +256,7 @@
 		var divModel = "";
 		$.each(data,function(i,val){
 		    divModel += '<div class="grid" data-size="1" onmouseout="mouseOut('+val.id+')" onmouseover="mouseIn('+val.id+')">';
-		    divModel +='<div class="imgholder"><a href="javascript:openPicture('+val.id+');" ><img width="'+val.miniWidth+'px" height="'+val.miniHeight+'px" id="img'+val.id+'" src="'+val.miniUrl+'" /></a></div>';
+		    divModel +='<div class="imgholder"><a id="open'+val.id+'" href="javascript:openPicture('+val.id+');" ><img width="'+val.miniWidth+'px" height="'+val.miniHeight+'px" id="img'+val.id+'" src="'+val.miniUrl+'" /></a></div>';
 		    divModel +='<div style="padding:0px 0px 25px 10px;">';
 		    divModel +='<div style="position:absolute;right:20px;">'+val.user+'</div>';
 			if (val.remark != ''){
@@ -281,7 +281,7 @@
 	}
 
 	function openPicture(id){
-		window.open('openPicture.html?infoId='+id);
+		window.open('openPicture.html?infoId='+id+'&time='+new Date());
 	}
 	
 	function reloadThis(id){
@@ -313,6 +313,7 @@
 				data = value;
 				alert(data[0].info);
 				$("#img"+id).attr("src",data[0].url);
+				$("#open"+id).attr("href","#");
 				closeMask();
 			}
 		});

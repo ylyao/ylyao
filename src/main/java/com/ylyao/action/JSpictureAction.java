@@ -18,6 +18,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.tools.ant.util.DateUtils;
+
 import com.ylyao.model.JSpictureBean;
 import com.ylyao.model.MsgInfo;
 import com.ylyao.model.PageBean;
@@ -25,6 +27,7 @@ import com.ylyao.model.SystemBean;
 import com.ylyao.model.User;
 import com.ylyao.service.JSpictureService;
 import com.ylyao.service.SystemService;
+import com.ylyao.service.TestService;
 import com.ylyao.util.BaseAction;
 import com.ylyao.util.DwindlePic;
 import com.ylyao.util.SystemContext;
@@ -60,6 +63,13 @@ public class JSpictureAction extends BaseAction{
 	private Long infoid;
 	
 	private String level;
+	
+	
+	private TestService testService;
+	
+	private String params;
+	
+	private String rootKey;
 	
 	/**
 	 * 上传图片处理
@@ -178,7 +188,33 @@ public class JSpictureAction extends BaseAction{
 	}
 	
 	public void findBigPicture() throws Exception{
+		User user = (User) getSession().get("user");
 		Map<String,String> resultMap = new HashMap<String,String>();
+		if (user == null){
+			writeJson(new ArrayList<PageBean>(), new String[]{"id","url","remark","miniUrl","miniWidth","miniHeight","user"}, null);
+		}
+		List<PageBean> allInfo = jspictureService.findPageInfo(10000,1,user.getUsername(),"mySelf");
+		Long leftId;
+		Long rightId;
+		for (int i = 0;i<allInfo.size();i++){
+			if (allInfo.get(i).getInfoId().equals(infoid)){
+				if (i == 0){
+					resultMap.put("leftId",String.valueOf(allInfo.get(allInfo.size()-1).getInfoId()));
+					if (i == allInfo.size()-1){
+						resultMap.put("rightId",String.valueOf(allInfo.get(0).getInfoId()));
+					}else{
+						resultMap.put("rightId",String.valueOf(allInfo.get(i+1).getInfoId()));
+					}
+				}else{
+					resultMap.put("leftId",String.valueOf(allInfo.get(i-1).getInfoId()));
+					if (i == allInfo.size()-1){
+						resultMap.put("rightId",String.valueOf(allInfo.get(0).getInfoId()));
+					}else{
+						resultMap.put("rightId",String.valueOf(allInfo.get(i+1).getInfoId()));
+					}
+				}
+			}
+		}
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(infoid);
 		List<Object> list = jspictureService.findByIds(ids);
@@ -238,9 +274,14 @@ public class JSpictureAction extends BaseAction{
 		if (sb != null){
 			tdcUrl = sb.getValue();
 		}
-		tdcUrl += "/openPicture.html?infoId="+infoid;
-		tdcDeal(tdcUrl,"big"+infoid);
+		//tdcUrl += "/openPicture.html?infoId="+infoid;
+		tdcUrl = bigUrl;
+		//tdcDeal(tdcUrl,"big"+infoid,100,100);
+		String imagePath = getWebPath()+"pictures\\tdc\\big"+infoid+".png";
+		ZXingUtil.encodeQRCodeImage(tdcUrl, null, imagePath, 100, 100, null);
 		resultMap.put("miniPath", miniPath);
+		resultMap.put("user", js.getUser() == null ? "" : js.getUser());
+		resultMap.put("time", js.getUpdateTime() == null ? "":DateUtils.format(js.getUpdateTime(),"yyyy-MM-dd"));
 		writeJson(resultMap,null,null);
 	}
 	
@@ -436,6 +477,30 @@ public class JSpictureAction extends BaseAction{
 
 	public void setLevel(String level) {
 		this.level = level;
+	}
+
+	public TestService getTestService() {
+		return testService;
+	}
+
+	public void setTestService(TestService testService) {
+		this.testService = testService;
+	}
+
+	public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
+
+	public String getRootKey() {
+		return rootKey;
+	}
+
+	public void setRootKey(String rootKey) {
+		this.rootKey = rootKey;
 	}
 	
 }
