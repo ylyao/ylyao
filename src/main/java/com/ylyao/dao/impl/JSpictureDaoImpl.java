@@ -45,7 +45,6 @@ public class JSpictureDaoImpl extends BaseIbatis implements JSpictureDao {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("pagesize", String.valueOf(pagesize));
 		map.put("sizes", String.valueOf((page-1)*pagesize));
-		map.put("page", String.valueOf(page));
 		map.put("user",user);
 		map.put("level", level);
 		return getSqlMapClientTemplate()

@@ -6,19 +6,14 @@
 <meta content=”yes” name=”apple-mobile-web-app-capable” />
 <meta content=”black” name=”apple-mobile-web-app-status-bar-style”  />
 <meta content=”telephone=no” name=”format-detection” />
-<title>图片小集</title>
+<title>Insert title here</title>
 <script src="js/jquery-1.8.2.js"></script>
 <style type="text/css">
-	body{
-		background-color: #FFFFFF;
-		font-family: "microsoft yahei","宋体","arial";
-	}
 	
 	.bigPicture{
-		min-height:600px;
-		background:#1A1A1A;
+		min-height:100px;
+		background:#fff;
 		font-size:12px;
-		width:100%;
 		float:left;
 		box-shadow: 0 1px 3px rgba(34,25,25,0.4);
 		-moz-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
@@ -28,102 +23,72 @@
 		-o-transition: top 1s ease, left 1s ease;
 		-ms-transition: top 1s ease, left 1s ease;
 		border-radius: 8px;
-		text-align:center;
 	}
+	
+	.bigFont{
+		min-height:20px;
+		width:400px;
+		background:#fff;
+		margin:0px 0px 10px 0px;
+		box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-moz-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-webkit-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
+		-webkit-transition: top 1s ease, left 1s ease;
+		-moz-transition: top 1s ease, left 1s ease;
+		-o-transition: top 1s ease, left 1s ease;
+		-ms-transition: top 1s ease, left 1s ease;
+		border-radius: 8px;
+	}
+	
+	.fontSpace{
+		float:left;
+		max-width:500px;
+		margin:0px 0px 0px 20px;
+	}
+	
+	.bigFont:hover {
+		box-shadow: 0 1px 13px rgba(34,25,25,1);
+		-moz-box-shadow: 0 1px 13px rgba(34,25,25,1);
+		-webkit-box-shadow: 0 1px 13px rgba(34,25,25,1);
+	}
+	
 	.bigPicture:hover {
 		box-shadow: 0 1px 13px rgba(34,25,25,1);
 		-moz-box-shadow: 0 1px 13px rgba(34,25,25,1);
 		-webkit-box-shadow: 0 1px 13px rgba(34,25,25,1);
 	}
 	
-	.leftButton{
-		background-image:url(img/page_button.gif);
-		background-repeat:no-repeat;
-		background-position:-35px -0px;
-		width:25px;
-		height:46px;
-		position: absolute;
-		z-index:9999;
-		left:8px;
-		top:300px;
-		filter: Alpha(Opacity=70);
-        -moz-opacity: 0.6;
-        opacity: 0.6;
-        cursor: pointer;
-	}
-	.leftButton:hover{
-		background-image:url(img/page_button.gif);
-		background-repeat:no-repeat;
-		background-position:-35px -47px;
-		width:25px;
-		height:46px;
-		position: absolute;
-		z-index:9999;
-		left:8px;
-		top:300px;
-		filter: Alpha(Opacity=70);
-        -moz-opacity: 0.6;
-        opacity: 0.6;
-        cursor: pointer;
+	.pic{
+		width:800px;
 	}
 	
-	.rightButton{
-		background-image:url(img/page_button.gif);
-		background-repeat:no-repeat;
-		background-position:-100px -0px;
-		width:25px;
-		height:46px;
-		position: absolute;
-		z-index:9999;
-		top:300px;
-		right:8px;
-		filter: Alpha(Opacity=70);
-        -moz-opacity: 0.6;
-        opacity: 0.6;
-        cursor: pointer;
-	}
-	.rightButton:hover{
-		background-image:url(img/page_button.gif);
-		background-repeat:no-repeat;
-		background-position:-100px -47px;
-		width:25px;
-		height:46px;
-		position: absolute;
-		z-index:9999;
-		top:300px;
-		right:8px;
-		filter: Alpha(Opacity=70);
-        -moz-opacity: 0.6;
-        opacity: 0.6;
-        cursor: pointer;
+	.font{
+		font-family: "楷体","楷体_GB2312";
+		margin:1px 0px 1px 30px;
 	}
 	
-	.remarkDiv{
-		background:#737373;
-		width:100%;
-		height:80px;
-		position: absolute;
-		z-index:9999;
-		left:0px;
-		filter: Alpha(Opacity=60);
-        -moz-opacity: 0.6;
-        opacity: 0.6;
+	.inFont{
+		font-family: "楷体","楷体_GB2312";
+		margin:1px 5px 1px 5px;
+		min-height:40px;
 	}
 	
-	.tdc{
-		background-image:url(img/zxing_out.png);
-		background-repeat:no-repeat;
-		position: absolute;
-		top:10px;
-		left:8px;
+	body{
+		background-color: #fff;
+	}
+	
+	.fontSpan{
+		cursor:pointer;
+		display:inline-block;
+		height:40px;
+		text-align:center;
+		border:1px solid #eee;
+		background:#fff;
+		margin: 5px 0px 0px 5px;
+		width:140px;
 	}
 </style>
 <script type="text/javascript">
-	var pWidth;
-	var pHeight;
-	var leftId;
-	var rightId;
-	
 	function getQueryString(name) {
     	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
    		var r = window.location.search.substr(1).match(reg);
@@ -141,65 +106,16 @@
 				"infoid" : tempId
 			},
 			success : function(value) {
-				$("#bigPicture").append("<img style='max-width:800px;margin:10px 0px 5px 0px;' src="+value[0].miniPath+"></img><br>");
-				//$("#tdc").append("<img width='100px' height='100px' src=pictures/tdc/big"+tempId+".png></img><br>");
-				$("#tdc").css({
-					"background-image":"url(pictures/tdc/big"+tempId+".png)"
-				});
-				$("#remarkValue").html("　　"+value[0].remark);
-				$("#subUser").html(value[0].user+"&nbsp;&nbsp;"+value[0].time);
-				leftId = value[0].leftId;
-				rightId = value[0].rightId;
+				$("#bigPicture").append("<img style='max-width:800px;margin:10px 0px 5px 0px;' src="+value[0].miniPath+"></img><br>"+value[0].remark);
 			}
 		});
-		pWidth = $(window).width();
-		pHeight = $(window).height();
-		
-		$("#bigPicture").css({
-			"min-height":pHeight-15
-		});
-		
-		$("#remarkDiv").css({
-			"top":pHeight - 80
-		});
-		
-		$("#tdc").css({
-			"top":pHeight - 180
-		});
-		
-		$("#leftButton").click(function(){
-			window.open('openPicture.html?infoId='+leftId+'&time='+new Date(),'_self');
-		});
-		
-		$("#rightButton").click(function(){
-			window.open('openPicture.html?infoId='+rightId+'&time='+new Date(),'_self');
-		});
 	});
-	
-	$(window).scroll(function(){
-		　　var scrollTop = $(this).scrollTop();
-		　　var scrollHeight = $(document).height();
-		　　var windowHeight = $(this).height();
-			$(".remarkDiv").css({
-			 "top": scrollTop + (windowHeight - 80)
-		   });
-			$(".tdc").css({
-				 "top": scrollTop + (windowHeight - 180)
-			   });
-			$(".leftButton").css({
-				 "top": scrollTop + 300
-			   });
-			$(".rightButton").css({
-				"top": scrollTop + 300
-			   });
-		});
 </script>
 </head>
 <body>
-	<div id="leftButton" class="leftButton" ></div>
-	<div id="rightButton" class="rightButton"></div>
 	<div id="bigPicture" class="bigPicture"></div>
-	<div id="tdc" class='tdc'><img src="img/zxing_out.png"></div>
-	<div id="remarkDiv" class="remarkDiv"><span><br /><font color="#FFFFFF" id="remarkValue" style="position:absolute;left:10px"></font><br /><font id="subUser" style="position:absolute;right:40px" color="#FFFFFF"></font></span></div>
+	<div class="fontSpace">
+		<span class="fontSpan"></span>
+	</div>
 </body>
 </html>

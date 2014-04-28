@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 该属性设置Struts 2应用是否使用开发模式。如果设置该属性为true，则可以在应用出错时显示更多、更友好的出错提示。该属性只接受true和flase两个值，该属性的默认值是false。通常，应用在开发阶段，将该属性设置为true，当进入产品发布阶段后，则该属性设置为false。
+-->
+	<constant name="struts.devMode" value="true"/>
+	<!-- 该属性指定需要Struts 2处理的请求后缀，该属性的默认值是action，即所有匹配*.action的请求都由Struts 2处理。如果用户需要指定多个请求后缀，则多个后缀之间以英文逗号（,）隔开
+-->
+    <constant name="struts.action.extension" value="do"/>
+    <!-- 指定Struts 2默认的ObjectFactory Bean，该属性默认值是spring -->
+    <constant name="struts.objectFactory" value="spring"/>
+
+	<package name="test" extends="struts-default">
+        <action name="test_*" class="com.ylyao.action.TestAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="login" extends="struts-default">
+        <action name="login_*" class="com.ylyao.action.LoginAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="jsPicture" extends="struts-default">
+        <action name="jsPicture_*" class="com.ylyao.action.JSpictureAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="initAction" extends="struts-default">
+        <action name="initAction_*" class="com.ylyao.action.InitAction" method="{1}">
+        </action>
+	</package>
+	
+	<package name="infoPageAction" extends="struts-default">
+        <action name="infoPage_*" class="com.ylyao.action.InfoPageAction" method="{1}">
+        </action>
+	</package>
+</struts>

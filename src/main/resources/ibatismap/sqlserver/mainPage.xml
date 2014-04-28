@@ -37,12 +37,16 @@
 	<!--政策观察详细  -->
 	<select id="getPage" resultMap="pageBeanList" parameterClass="java.util.Map">
       <![CDATA[
-      SELECT * FROM ( SELECT *,XH = ROW_NUMBER() OVER(ORDER BY UPDATETIME DESC) FROM (
-      	SELECT TOP ( $sizes$ + $pagesize$ ) *
+      	SELECT TOP $pagesize$ *
 			FROM PAGEBEAN
-			WHERE INFO_LEVEL IS NULL OR INFO_LEVEL = 'open' OR ( INFO_LEVEL = #level# AND SUBMIT_USER = #user# )
-			ORDER BY UPDATETIME DESC,ID DESC
-      ) A )A WHERE XH >= ( $sizes$+1 ) AND XH <= ( $sizes$ + $pagesize$ ) ORDER BY XH 
+			WHERE (ID NOT IN
+            	(SELECT TOP $sizes$ id
+         			FROM PAGEBEAN 
+         				WHERE INFO_LEVEL IS NULL OR ( INFO_LEVEL = #level# AND SUBMIT_USER = #user# )
+        		 ORDER BY UPDATETIME DESC,ID DESC)
+        		 AND INFO_LEVEL IS NULL OR ( INFO_LEVEL = #level# AND SUBMIT_USER = #user# )
+        	 )
+			 ORDER BY UPDATETIME DESC,ID DESC
       ]]>
 	</select>
 	

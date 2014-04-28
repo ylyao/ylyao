@@ -11,62 +11,13 @@
 		<result property="id" column="ID" />
 		<result property="key" column="VALUE" />
 		<result property="value" column="BIG_VALUE" />
-		<result property="test1" column="TEST1" />
-		<result property="test2" column="TEST2" />
-		<result property="test3" column="TEST3" />
-		<result property="test4" column="TEST4" />
 	</resultMap>
-	
-	<resultMap id="TEST1" class="java.lang.String"> 
-	  <result property="" column="TEST1"/> 
-	</resultMap>
-	
-	<resultMap id="TEST2" class="java.lang.String"> 
-	  <result property="" column="TEST2"/> 
-	</resultMap>
-	
-	<resultMap id="TEST3" class="java.lang.String"> 
-	  <result property="" column="TEST3"/> 
-	</resultMap>
-	
-	<resultMap id="TEST4" class="java.lang.String"> 
-	  <result property="" column="TEST4"/> 
-	</resultMap>
-	
+
 	<!--政策观察详细  -->
 	<select id="getAllTestBean" resultMap="testBeanListMap" >
       <![CDATA[
       	SELECT * from TEST_BEAN
       ]]>
 	</select>
-	
-	<select id="TEST1" resultMap="TEST1" parameterClass="java.util.Map">
-      <![CDATA[
-      	SELECT distinct TEST1 from TEST_BEAN WHERE $param$
-      ]]>
-	</select>
-	
-	<select id="TEST2" resultMap="TEST2" parameterClass="java.util.Map">
-      <![CDATA[
-      	SELECT distinct TEST2 from TEST_BEAN WHERE $param$
-      ]]>
-	</select>
-	
-	<select id="TEST3" resultMap="TEST3" parameterClass="java.util.Map">
-      <![CDATA[
-      	SELECT distinct TEST3 from TEST_BEAN WHERE $param$
-      ]]>
-	</select>
-	
-	<select id="TEST4" resultMap="TEST4" parameterClass="java.util.Map">
-      <![CDATA[
-      	SELECT distinct TEST4 from TEST_BEAN WHERE $param$
-      ]]>
-	</select>
 
-	<select id="count" resultClass="Integer" parameterClass="java.util.Map">
-      <![CDATA[
-      	SELECT count(*) from TEST_BEAN WHERE $param$
-      ]]>
-	</select>
 </sqlMap>
