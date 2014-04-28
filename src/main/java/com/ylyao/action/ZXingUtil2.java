@@ -19,7 +19,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 /**
  * 参考 http://blog.csdn.net/lcx46/article/details/13626841

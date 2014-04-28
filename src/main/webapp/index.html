@@ -1,207 +1,95 @@
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script type="text/javascript" src="js/mootools.r420.js"></script>
-	<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/styles.css" />
-<title></title>
-</head>
-
-<!-- when the page loads, hide all sliders -->
-<body onload = "EvaSlider.hide(); st4r.hide();rickSlider.hide();lakiffSlider.hide();start();">
-
-<div id="container">
-
-	<!-- THE STARTING POINT -->
-	<div id="start" class="positioning">
-		<div class="inside">
-			<iframe src="start.html" style="border:none;height:450px;width:100%;"></iframe>
-			<div class="navigator"><div id="gotowork"><img src="images/button_start.gif" alt="ready go!" /></div></div>
-		</div>
-	</div>
-	
-	
-	<!-- ABOUT -->
-	
-	<div id="about" class="positioning">
-		<div class="inside">
-			<img src="images/title_about.gif" alt="about me, me, me" />
-			<div class="header">I suppose this is where I write about myself.</div>
-			<div class="text">
-			Hi! My name is Melissa Hie. I am currently residing in Los Angeles, and I am a recent Computer Science graduate from <a href="http://www.ucla.edu/">UCLA</a> (Class of '07). I am not too fond of my major, but I admit it is an interesting field and has given me valuable experiences I would not possess otherwise. My real passion lies in web and graphic designing.<br />
-			<br />
-			In my free time, I enjoy watching TV shows. Lots and lots of it. My all time favorite is <a href="http://en.wikipedia.org/wiki/The_X-Files">The X-Files</a>, which I have been watching literally half my life! Other honorable mentions are Battlestar Galactica and House MD. I like playing videogames, and occasionally trying to speak Japanese (actually, it's my minor in college). I also enjoy reading books, but I like webcomics even better! My favorite comics are <a href="http://www.xkcd.com/">XKCD</a> and <a href="http://www.pbfcomics.com/">The Perry Bible Fellowship</a>. These guys are brilliant.
-			</div>
-			<div class="navigator"><div id="gotoskills"><img src="images/button_skills.gif" alt="on to my portfolio!" /></div></div>
-		</div>
-	</div>
-	
-	
-	<!-- WORK -->
-	
-	
-	<div id="work" class="positioning">
-		<div class="inside" style="float:left;">
-			<div id="sliderEva" class="slider">
-				<div>
-					<img src="pictures/112.jpg" id="picture1" />
-					<a href="javascript:change()">next</a>
-				</div>
-			</div>
-			
-			<div id="sliderst4r" class="slider">
-				<img src="pictures/113.jpg" id="st4rout" />
-			</div>
-			
-			<div id="sliderRick" class="slider">
-				<img src="pictures/114.jpg" id="rickout" />
-			</div>
-			
-			<div id="sliderLakiff" class="slider">
-				<img src="pictures/115.jpg" id="lakiffout" alt="LAKIFF" />
-			</div>
-			
-			<div class="header">some photo I love</div>
-			
-			<div class="text">click on the thumbnails for full-view of each site<br/>
-			<div id="evacarein" class="button"><img src="images/thumb/evacare.jpg" alt="Eva Care Group" /></div> <div id="st4rin" class="button"><img src="images/thumb/st4rbuck.jpg" alt="st4rbuck.net" /></div> <div id="rickin" class="button"><img src="images/thumb/rickdavid.jpg" alt="RickDavidPhoto.com" /></div> <div id="lakiffin" class="button"><img src="images/thumb/lakiff.jpg" alt="LAKIFF" /></div>
-			
-			</div>
-			<div class="navigator"><div id="gotoprint"><img src="images/button_print_design.gif" alt="view  print design" /></div></div>
-		</div>
-	</div>
-	
-	
-	<!-- CONTACT -->
-	
-	
-	<div id="contact" class="positioning">
-		<div class="inside">
-			<img src="images/title_contact.gif" alt="contact me!" />
-			<div class="header">ways to reach me</div>
-			<div class="text">
-			    <br />
-			    Copyright &copy; 2007 by Melissa Hie | All Rights Reserved<br />
-			    script by <a href="http://www.mootools.net/">mootools.net</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://validator.w3.org/check/referer">XHTML</a> | <a href="http://getfirefox.com/">Get Firefox</a>
-		    </div>
-			
-			<div class="navigator"><div id="gotohome"><img src="images/button_home.gif" alt="go back home" /></div></div>
-		</div>	
-	</div>
-	
-	
-	<!-- PRINT -->
-	
-	<div id="print" class="positioning">
-		<div style="float:left;" id="blocksit">
-			
-		</div>
-		<div class="inside">
-			<div class="navigator"><div id="gotoabout"><img src="images/button_about.gif" alt="Skillsets" /></div></div>
-		</div>
-	</div>
-	
-	
-	<div id="skills" class="positioning">
-		<div class="inside">
-			<img src="images/title_skills.gif" alt="Skills" />
-			<div class="header"></div>
-			<div class="text">
-			<ul id="purple">
-				<li>Advanced knowledge in (X)HTML, CSS</li>
-				<li>Comfortable with hand-coding (X)HTML and CSS from scratch</li>
-				<li>Working knowledge of PHP and MySQL</li>
-				<li>Proficiency in Adobe Photoshop</li>
-				<li>Dedicated, fast learner, detail oriented</li>
-				<li>Languages: English (proficient), Indonesian (proficient), Japanese (intermediate)</li>
-			</ul>
-			</div>
-			<div class="navigator"><div id="gotocontact"><img src="images/button_contact.gif" alt="contact me" /></div></div>
-			
-		</div>	
-	</div>
-</div>
-
-
-
-<script type="text/javascript">
-	$.noConflict();
-	//释放jquery的$对象
-	function init2(){
-		jQuery.ajax("jsPicture_dealJSpicture.do", {
-	        type:"post",
-	        data:{
-	        	"bigUrl":"http://image226-c.poco.cn/mypoco/myphoto/20131202/00/17433263220131202000345086.jpg",
-	        },
-	        success:function (data) {
-	        	
-	        }
-		});
-	}
-	//使用jQuery对象
-	jQuery(document).ready(function () {
-		init2();
-	});
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Old School Cassette Player with HTML5 Audio</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Old School Cassette Player with HTML5 Audio: Vintage format meets modern web tech: an HTML5 audio player with realistic controls" />
+        <meta name="keywords" content="cassette, html5, audio, player, css3, buttons, sounds, vintage, old school, javascript, jquery" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/knobKnob.css" />
+        <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet' type='text/css' />
+		<script type="text/javascript" src="js/modernizr.custom.69142.js"></script> 
+    </head>
+    <body>
+        <div class="container">
 		
-	// navigations
-	
-	var skroll = new Fx.Scroll(window, {duration: 1500, wait: false, transition: Fx.Transitions.quadInOut});
-	
-	// website layouts
-	var EvaSlider = new Fx.Slide('sliderEva', {duration: 1000, transition: Fx.Transitions.bounceOut});
-	var st4r = new Fx.Slide('sliderst4r', {duration: 1000, transition: Fx.Transitions.bounceOut});
-	var rickSlider = new Fx.Slide('sliderRick', {duration: 1000, transition: Fx.Transitions.bounceOut});
-	var lakiffSlider = new Fx.Slide('sliderLakiff', {duration: 1000, transition: Fx.Transitions.bounceOut});
-	
-	
-	
-	$('gotohome').addEvent('click', function(){ skroll.toElement('start'); });
-	$('gotoabout').addEvent('click', function(){ 
-		skroll.toElement('about'); 
-	});
-	$('gotowork').addEvent('click', function(){  
-		skroll.toElement('work'); 
-		EvaSlider.hide(); 
-		st4r.hide();
-		rickSlider.hide();
-		lakiffSlider.hide();
-	});
-	$('gotocontact').addEvent('click', function(){ skroll.toElement('contact'); });
-	$('gotoprint').addEvent('click', function(){ 
-		skroll.toElement('print');
-		jQuery("#blocksit").empty().append('<iframe id="blocksitIframe" name="blocksitIframe" src="jqueryBlocksit.html" style="border:none;height:590px;width:1400px;"></iframe>');	
-	});
-	$('gotoskills').addEvent('click', function(){ skroll.toElement('skills'); });
-	
-	
+			<!-- Codrops top bar -->
+            <div class="codrops-top">
+                <a href="http://tympanus.net/Tutorials/SwatchBook/">
+                    <strong>&laquo; Previous Demo: </strong>Swatch Book with CSS3 &amp; jQuery
+                </a>
+                <span class="right">
+					<a href="http://manicho.deviantart.com/art/Cassette-PSD-File-86548493">Cassette by Mauricio Estrella</a>
+                    <a href="http://tympanus.net/codrops/2012/07/12/old-school-cassette-player-with-html5-audio/">
+                        <strong>Back to the Codrops Article</strong>
+                    </a>
+                </span>
+                <div class="clr"></div>
+            </div><!--/ Codrops top bar -->
+			
+			<header>
+			
+				<h1><span>Old School Cassette Player</span> with HTML5 Audio</h1>
+				<h2>Vintage format meets modern web tech: an HTML5 audio player with realistic controls <br /><strong>Best viewed &amp; listened to in modern browsers</strong></h2>
 
-	$('evacarein').addEvent('click', function(){ st4r.hide();rickSlider.hide(); lakiffSlider.hide();EvaSlider.toggle(); });
-	$('picture1').addEvent('click', function(){ st4r.hide();rickSlider.hide(); lakiffSlider.hide();EvaSlider.toggle(); });
-	
-	$('st4rin').addEvent('click', function(){ EvaSlider.hide();rickSlider.hide();lakiffSlider.hide();st4r.toggle(); });
-	$('st4rout').addEvent('click', function(){ EvaSlider.hide();rickSlider.hide();lakiffSlider.hide();st4r.toggle(); });
+				
+				<div class="support-note"><!-- let's check browser support with modernizr -->
+					<span class="no-cssanimations">CSS animations are not supported in your browser</span>
+					<span class="no-csstransforms">CSS transforms are not supported in your browser</span>
+					<span class="no-csstransforms3d">CSS 3D transforms are not supported in your browser</span>
+					<span class="no-csstransitions">CSS transitions are not supported in your browser</span>
+					<span class="note-ie">Sorry, only modern browsers.</span>
+				</div>
+				
+			</header>
 
-	$('rickin').addEvent('click', function(){ st4r.hide();EvaSlider.hide();lakiffSlider.hide();rickSlider.toggle(); });
-	$('rickout').addEvent('click', function(){ st4r.hide();EvaSlider.hide();lakiffSlider.hide();rickSlider.toggle(); });
-	
-	$('lakiffin').addEvent('click', function(){ st4r.hide();EvaSlider.hide();rickSlider.hide();lakiffSlider.toggle(); });
-	$('lakiffout').addEvent('click', function(){ st4r.hide();EvaSlider.hide();rickSlider.hide();lakiffSlider.toggle(); });
-	
-	function start(){
-		var array = new Array;
-		array.push("gotohome");
-		goTo(array[0]);
-	}
-	
-	function goTo(id){
-		document.getElementById(id).click();
-	}
-	
-	function change(){
-		 var bigimg = document.getElementById("picture1");
-		 bigimg.src="pictures/113.jpg";
-	}
-</script>
+			<div id="vc-container" class="vc-container">
+				<div class="vc-tape-wrapper">
+					<div class="vc-tape">
+						<div class="vc-tape-back">
+							<div class="vc-tape-wheel vc-tape-wheel-left"><div></div></div>
+							<div class="vc-tape-wheel vc-tape-wheel-right"><div></div></div>
+						</div>
+						<div class="vc-tape-front vc-tape-side-a">
+							<span>A</span>
+						</div>
+						<div class="vc-tape-front vc-tape-side-b">
+							<span>B</span>
+						</div>
+					</div>
+				</div>
+				<div class="vc-loader"></div>
+			</div><!-- //vc-container -->
+		
+			<div class="attribution">
+				<p>Songs by <a href="http://freemusicarchive.org/music/Blue_Ducks/">Blue Ducks</a> and <a href="http://freemusicarchive.org/music/Blank__Kytt/">Blank & Kytt</a>:</p>
 
-</body>
+				<div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Blue_Ducks/Six/"><span property="dct:title">Six</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://freemusicarchive.org/music/Blue_Ducks/">Blue Ducks</a>) / <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">CC BY-NC-SA 3.0</a></div>
+
+				<div xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/" about="http://freemusicarchive.org/music/Blank__Kytt/Heavy_Crazy_Serious/"><span property="dct:title">Heavy, Crazy, Serious</span> (<a rel="cc:attributionURL" property="cc:attributionName" href="http://blankkytt.bandcamp.com/">Blank & Kytt</a>) / <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a></div>
+				
+				<p>Cassette tape PSD by <a href="http://manicho.deviantart.com/art/Cassette-PSD-File-86548493">Mauricio Estrella</a></p>
+			</div><!--//attribution-->
+
+		</div><!-- //container -->
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<!-- KnobKnob by Martin Angelov : https://github.com/martinaglv/KnobKnob -->
+		<script src="js/transform.js"></script>
+		<script src="js/knobKnob.jquery.js"></script>
+
+		<script type="text/javascript" src="js/jquery.cassette.js"></script>
+		<script type="text/javascript">	
+			$(function() {
+				
+				$( '#vc-container' ).cassette();
+						
+				});
+		</script>
+    </body>
 </html>
